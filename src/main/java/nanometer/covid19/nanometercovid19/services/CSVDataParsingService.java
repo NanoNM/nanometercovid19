@@ -63,18 +63,20 @@ public class CSVDataParsingService {
     public void analysisOfCSVData(InputStream in){
         int i = 0;
         try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))).build()) {
-            Iterator<String[]> iterator = csvReader.iterator();
-            covid19DAO.deleteAllDailyData();
-            while (iterator.hasNext()) {
-                String[] next = iterator.next();
-                if(i >= 1) {
-                    covid19DAO.insertCOVIDData(next[2],next[3],next[4],
-                            Long.parseLong("".equals(next[7]) ?"0":next[7]),
-                            Long.parseLong("".equals(next[8])?"0":next[8]),
-                            Long.parseLong("".equals(next[9])?"0":next[9]),
-                            Long.parseLong("".equals(next[10])?"0":next[10]),next[11],
-                            Double.parseDouble("".equals(next[12])?"0.00":next[12]),
-                            Double.parseDouble("".equals(next[13])?"0.00":next[13]));
+            //            covid19DAO.deleteAllDailyData();
+            for (String[] next : csvReader) {
+                int dateHave = covid19DAO.selectIfDataHave(next[4], next[11]);
+                if (dateHave > 0) {
+                    return;
+                }
+                if (i >= 1) {
+                    covid19DAO.insertCOVIDData(next[2], next[3], next[4],
+                            Long.parseLong("".equals(next[7]) ? "0" : next[7]),
+                            Long.parseLong("".equals(next[8]) ? "0" : next[8]),
+                            Long.parseLong("".equals(next[9]) ? "0" : next[9]),
+                            Long.parseLong("".equals(next[10]) ? "0" : next[10]), next[11],
+                            Double.parseDouble("".equals(next[12]) ? "0.00" : next[12]),
+                            Double.parseDouble("".equals(next[13]) ? "0.00" : next[13]));
                 }
                 i++;
             }

@@ -43,4 +43,7 @@ public interface COVID19DAO {
     @Select("select * from csse_covid_19_all_reports_daily_update where Province_State=#{Province_State}")
     CsseCovid19AllReportsDailyUpdate[] selectByCityRegion(String Province_State);
 
+    @Select("select COUNT(id) from csse_covid_19_all_reports_daily_update where Last_Update=#{Last_Update} and Combined_Key=#{Combined_Key}")
+    int selectIfDataHave(String Last_Update,String Combined_Key);
+
 }

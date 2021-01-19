@@ -1,5 +1,8 @@
 package nanometer.covid19.nanometercovid19;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import nanometer.covid19.nanometercovid19.services.CSVDataParsingService;
@@ -15,6 +18,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest
 class Nanometercovid19ApplicationTests {
@@ -22,6 +26,19 @@ class Nanometercovid19ApplicationTests {
 //    String covid19DateUrl;
 //    @Autowired
 //    CSVDataParsingService cvsDataGetService;
+
+    @Test
+    void testTengXun() throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5")
+                .method("GET", null)
+                .build();
+        Response response = client.newCall(request).execute();
+        JSONObject tengXunChina = JSON.parseObject(String.valueOf(JSON.parseObject(Objects.requireNonNull(response.body()).string())));
+        JSONArray areaTree = tengXunChina.getJSONArray("areaTree");
+    }
 
     @Test
     void temptest(){

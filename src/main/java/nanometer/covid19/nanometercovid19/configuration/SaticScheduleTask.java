@@ -23,6 +23,7 @@ public class SaticScheduleTask {
     //或直接指定时间间隔，例如：5秒
     @Scheduled(fixedDelayString="${covid19_date_source_timing_acquisition}")
     private void gitHubDataTasks() {
+        System.out.println("github数据更新");
         Response response = cvsDataGetService.getCovid19DateUrl();
         InputStream inputStream = Objects.requireNonNull(response.body()).byteStream();
         cvsDataGetService.analysisOfCSVData(inputStream);
