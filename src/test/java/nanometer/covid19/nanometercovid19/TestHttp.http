@@ -1,0 +1,4 @@
+GET http://localhost:8888/getbycountry?country=US
+Accept: application/json
+
+###
