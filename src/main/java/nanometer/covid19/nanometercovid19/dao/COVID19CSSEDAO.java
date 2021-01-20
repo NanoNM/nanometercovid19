@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface COVID19DAO {
+public interface COVID19CSSEDAO {
     //   插入历史数据
     @Insert("insert into csse_covid_19_all_reports_daily_update " +
             "(Province_State," +

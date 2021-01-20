@@ -1,18 +1,11 @@
 package nanometer.covid19.nanometercovid19.configuration;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import nanometer.covid19.nanometercovid19.services.CSVDataParsingService;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 @Configuration      //1.主要用于标记配置类，兼备Component的效果。
 @EnableScheduling   // 2.开启定时任务
@@ -29,17 +22,14 @@ public class SaticScheduleTask {
     private void gitHubDataTasks() {
         System.out.println("github数据同步");
         String response = cvsDataGetService.getCovid19DateUrl();
-
         cvsDataGetService.analysisOfDayCSVData(response);
-
         cvsDataGetService.analysisOfCSVData(response);
-
-
         System.out.println("github数据同步完毕");
     }
 
     @Scheduled(fixedDelayString="${covid19_date_source_timing_acquisition}")
     private void tengXunDataTasks() {
-
+        System.out.println("腾讯疫情数据同步");
+        System.out.println("腾讯疫情数据同步完毕");
     }
 }
