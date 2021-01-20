@@ -15,13 +15,24 @@ public class dataController extends BaseController{
     COVID19DAO covid19DAO;
 
     @ResponseBody
-    @GetMapping("/getbycountry")
-    CsseCovid19AllReportsDailyUpdate[] getDateByCountry(@RequestParam("country")String country){
+    @GetMapping("/csse/getbycountry")
+    CsseCovid19AllReportsDailyUpdate[] getDateByCountry(@RequestParam("c")String country){
         return covid19DAO.selectByCountryRegion(country);
     }
     @ResponseBody
-    @GetMapping("/getbycity")
-    CsseCovid19AllReportsDailyUpdate[] getDateByCity(@RequestParam("city")String city){
+    @GetMapping("/csse/getbyprovince")
+    CsseCovid19AllReportsDailyUpdate[] getDateByCity(@RequestParam("p")String city){
         return covid19DAO.selectByCityRegion(city);
+    }
+
+    @ResponseBody
+    @GetMapping("/csse/hes/getbycountry")
+    CsseCovid19AllReportsDailyUpdate[] getDateByHesCountry(@RequestParam("c")String country){
+        return covid19DAO.selectByHesCountryRegion(country);
+    }
+    @ResponseBody
+    @GetMapping("/csse/hes/getbyprovince")
+    CsseCovid19AllReportsDailyUpdate[] getDateByHesCity(@RequestParam("p")String city){
+        return covid19DAO.selectByHesCityRegion(city);
     }
 }
