@@ -32,34 +32,34 @@ create table csse_covid_19_all_reports_hestory_daily_update
 
 create table tencent_city_data
 (
-    Province_ID  int          not null,
-    cityName     varchar(100) null,
-    healRate     double       null,
-    wzz          int          null,
-    grade        varchar(100) null,
-    heal         int          null,
-    nowConfirm   int          null,
-    dead         int          null,
-    suspect      int          null,
-    deadRate     int          null,
-    todayConfirm int          null,
-    confirm      int          null
+    Province_ID    int          not null,
+    cityName       varchar(100) null,
+    healRate       double       null,
+    wzz            int          null,
+    heal           int          null,
+    nowConfirm     int          null,
+    dead           int          null,
+    suspect        int          null,
+    deadRate       int          null,
+    todayConfirm   int          null,
+    confirm        int          null,
+    lastUpdateTime varchar(100) null
 );
 
 create table tencent_city_his_data
 (
-    Province_ID  int          not null,
-    cityName     varchar(100) null,
-    healRate     double       null,
-    wzz          int          null,
-    grade        varchar(100) null,
-    heal         int          null,
-    nowConfirm   int          null,
-    dead         int          null,
-    suspect      int          null,
-    deadRate     int          null,
-    todayConfirm int          null,
-    confirm      int          null
+    Province_ID    int          not null,
+    cityName       varchar(100) null,
+    confirm        int          null,
+    healRate       double       null,
+    wzz            int          null,
+    heal           int          null,
+    nowConfirm     int          null,
+    todayConfirm   int          null,
+    dead           int          null,
+    deadRate       int          null,
+    suspect        int          null,
+    lastUpdateTime varchar(100) null
 );
 
 create table tencent_detailed_china_data
