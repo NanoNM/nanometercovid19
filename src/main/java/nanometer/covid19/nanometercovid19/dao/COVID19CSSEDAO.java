@@ -60,7 +60,7 @@ public interface COVID19CSSEDAO {
     Integer insertCOVIDData(String Province_State, String Country_Region, String Last_Update, Long Confirmed, Long Deaths, Long Recovered, Long Active, String Combined_Key, Double Incident_Rate, Double Case_Fatality_Ratio);
 
     // 重置每日数据
-    @Delete("delete from csse_covid_19_all_reports_daily_update")
+    @Delete("TRUNCATE csse_covid_19_all_reports_daily_update")
     Integer deleteAllDailyData();
 
     @Select("select * from csse_covid_19_all_reports_daily_update where Country_Region=#{Country_Region}")

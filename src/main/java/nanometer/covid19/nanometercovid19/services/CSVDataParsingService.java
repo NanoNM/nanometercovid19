@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import nanometer.covid19.nanometercovid19.dao.COVID19CSSEDAO;
 import nanometer.covid19.nanometercovid19.util.GCCUTIL;
+import nanometer.covid19.nanometercovid19.util.Log4jUTIL;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,15 +27,13 @@ public class CSVDataParsingService {
     COVID19CSSEDAO covid19CSSEDAO;
 
     public String getCovid19DateUrl() {
-        SimpleDateFormat formatterM= new SimpleDateFormat("MM");
-        SimpleDateFormat formatterD= new SimpleDateFormat("dd");
-        SimpleDateFormat formatterY= new SimpleDateFormat("yyyy");
+        SimpleDateFormat formatter= new SimpleDateFormat("MM-dd-yyyy");
         Date date = new Date(System.currentTimeMillis());
-        String dateString = formatterM.format(date)+"-"+formatterD.format(date)+"-"+formatterY.format(date);
+        String dateString = formatter.format(date);
         String covid19DateUrl = baseCOVID19DateUrl + dateString + ".csv";
-        int index = 0;
+        String bodyDate = null;
         while(true){
-            index++;
+            Log4jUTIL.log.info("尝试请求: " + covid19DateUrl);
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
@@ -46,11 +45,15 @@ public class CSVDataParsingService {
                 try {
                     response = client.newCall(request).execute();
                     if (response.isSuccessful()){
-                        String bodyDate = Objects.requireNonNull(response.body()).string();
+                        bodyDate = Objects.requireNonNull(response.body()).string();
                         response.close();
-                        return bodyDate;
+                        break;
                     }else{
-                        dateString = formatterM.format(date)+"-"+(Integer.parseInt(formatterD.format(date))-index)+"-"+formatterY.format(date);
+                        Calendar calendar = new GregorianCalendar();
+                        calendar.setTime(date);
+                        calendar.add(Calendar.DATE,-1); //把日期往后增加一天,整数  往后推,负数往前移动
+                        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+                        dateString = formatter.format(date);
                         covid19DateUrl = baseCOVID19DateUrl + dateString + ".csv";
                     }
                 } catch (IOException e) {
@@ -58,6 +61,7 @@ public class CSVDataParsingService {
                 }
             }
         }
+        return bodyDate;
     }
 
     public void analysisOfCSVData(String responseBody){

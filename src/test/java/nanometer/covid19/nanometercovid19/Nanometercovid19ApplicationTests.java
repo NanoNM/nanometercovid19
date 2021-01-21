@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import nanometer.covid19.nanometercovid19.services.CSVDataParsingService;
+import nanometer.covid19.nanometercovid19.dao.COVID19TENGXUNDAO;
+import nanometer.covid19.nanometercovid19.services.JSONDateParsingService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,20 +25,26 @@ import java.util.Objects;
 class Nanometercovid19ApplicationTests {
 //    @Value("${covid19_date_source}")
 //    String covid19DateUrl;
-//    @Autowired
-//    CSVDataParsingService cvsDataGetService;
+    @Autowired
+    JSONDateParsingService jsonDateParsingService;
+
+    @Autowired
+    COVID19TENGXUNDAO covid19TENGXUNDAO;
 
     @Test
     void testTengXun() throws IOException {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Request request = new Request.Builder()
-                .url("https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5")
-                .method("GET", null)
-                .build();
-        Response response = client.newCall(request).execute();
-        JSONObject tengXunChina = JSON.parseObject(String.valueOf(JSON.parseObject(Objects.requireNonNull(response.body()).string())));
-        JSONArray areaTree = tengXunChina.getJSONArray("areaTree");
+
+        JSONObject txcovidOBJ = JSONObject.parseObject(jsonDateParsingService.getCovid19DateUrl());
+
+//        OkHttpClient client = new OkHttpClient().newBuilder()
+//                .build();
+//        Request request = new Request.Builder()
+//                .url("https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5")
+//                .method("GET", null)
+//                .build();
+//        Response response = client.newCall(request).execute();
+//        JSONObject tengXunChina = JSON.parseObject(String.valueOf(JSON.parseObject(Objects.requireNonNull(response.body()).string())));
+//        JSONArray areaTree = tengXunChina.getJSONArray("areaTree");
     }
 
     @Test
