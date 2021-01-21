@@ -1,25 +1,13 @@
-package nanometer.covid19.nanometercovid19;
+package covid.nanometer.top;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import nanometer.covid19.nanometercovid19.dao.COVID19TENGXUNDAO;
-import nanometer.covid19.nanometercovid19.services.JSONDateParsingService;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import covid.nanometer.top.dao.COVID19TENGXUNDAO;
+import covid.nanometer.top.services.JSONDateParsingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
 
 @SpringBootTest
 class Nanometercovid19ApplicationTests {
@@ -34,8 +22,8 @@ class Nanometercovid19ApplicationTests {
     @Test
     void testTengXun() throws IOException {
 
-        JSONObject txcovidOBJ = JSONObject.parseObject(jsonDateParsingService.getCovid19DateUrl());
-
+//        JSONObject txcovidOBJ = JSONObject.parseObject();
+        jsonDateParsingService.analysisOfDayCityData(jsonDateParsingService.getCovid19DateUrl());
 //        OkHttpClient client = new OkHttpClient().newBuilder()
 //                .build();
 //        Request request = new Request.Builder()

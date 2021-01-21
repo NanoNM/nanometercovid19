@@ -1,4 +1,4 @@
-package nanometer.covid19.nanometercovid19.util;
+package covid.nanometer.top.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

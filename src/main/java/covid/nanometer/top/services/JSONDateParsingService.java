@@ -1,9 +1,9 @@
-package nanometer.covid19.nanometercovid19.services;
+package covid.nanometer.top.services;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import nanometer.covid19.nanometercovid19.dao.COVID19TENGXUNDAO;
+import covid.nanometer.top.dao.COVID19TENGXUNDAO;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -95,6 +95,76 @@ public class JSONDateParsingService {
                     everyProvinceJson.getJSONObject("today").getInteger("confirm"),
                     everyProvinceJson.getJSONObject("today").getInteger("wzz_add")
             );
+        }
+    }
+
+    public void analysisOfHisDayCityData(String response) {
+        JSONObject jsonObject = JSONObject.parseObject(response);
+        JSONArray txcovidOBJS = jsonObject.getJSONArray("areaTree");
+        String lastUpdateTime = jsonObject.getString("lastUpdateTime");
+        JSONObject areaTreeOBJ = (JSONObject) txcovidOBJS.get(0);
+        JSONArray childrenOBJS = areaTreeOBJ.getJSONArray("children");
+        for (Object everyProvince:childrenOBJS) {
+            JSONObject everyProvinceJson = (JSONObject) everyProvince;
+            JSONArray cityChildrens = everyProvinceJson.getJSONArray("children");
+            String master = everyProvinceJson.getString("name");
+            for (Object cityChildren:cityChildrens){
+                JSONObject cityChildrenJson = (JSONObject) cityChildren;
+                Integer pID = covid19TENGXUNDAO.selectByHisMasterID(master, lastUpdateTime);
+                if (pID!=null){
+                    if (covid19TENGXUNDAO.selectIfCityDataHave(lastUpdateTime,cityChildrenJson.getString("name"),pID)>0){
+                        return;
+                    }
+                    covid19TENGXUNDAO.insertDayCityHisCOVIDData(
+                            pID,
+                            cityChildrenJson.getString("name"),
+                            cityChildrenJson.getJSONObject("total").getInteger("confirm"),
+                            cityChildrenJson.getJSONObject("total").getDouble("healRate"),
+                            cityChildrenJson.getJSONObject("total").getInteger("wzz"),
+                            cityChildrenJson.getJSONObject("total").getInteger("heal"),
+                            cityChildrenJson.getJSONObject("total").getInteger("nowConfirm"),
+                            cityChildrenJson.getJSONObject("today").getInteger("confirm"),
+                            cityChildrenJson.getJSONObject("total").getInteger("dead"),
+                            cityChildrenJson.getJSONObject("total").getDouble("deadRate"),
+                            cityChildrenJson.getJSONObject("total").getInteger("suspect"),
+                            lastUpdateTime
+                    );
+                }
+            }
+        }
+    }
+
+    public void analysisOfDayCityData(String response) {
+        JSONObject jsonObject = JSONObject.parseObject(response);
+        JSONArray txcovidOBJS = jsonObject.getJSONArray("areaTree");
+        String lastUpdateTime = jsonObject.getString("lastUpdateTime");
+        JSONObject areaTreeOBJ = (JSONObject) txcovidOBJS.get(0);
+        JSONArray childrenOBJS = areaTreeOBJ.getJSONArray("children");
+        covid19TENGXUNDAO.deleteAllHisCityDailyData();
+        for (Object everyProvince:childrenOBJS) {
+            JSONObject everyProvinceJson = (JSONObject) everyProvince;
+            JSONArray cityChildrens = everyProvinceJson.getJSONArray("children");
+            String master = everyProvinceJson.getString("name");
+            for (Object cityChildren:cityChildrens){
+                JSONObject cityChildrenJson = (JSONObject) cityChildren;
+                Integer pID = covid19TENGXUNDAO.selectByMasterID(master);
+                if (pID!=null){
+                    covid19TENGXUNDAO.insertDayCityCOVIDData(
+                            pID,
+                            cityChildrenJson.getString("name"),
+                            cityChildrenJson.getJSONObject("total").getInteger("confirm"),
+                            cityChildrenJson.getJSONObject("total").getDouble("healRate"),
+                            cityChildrenJson.getJSONObject("total").getInteger("wzz"),
+                            cityChildrenJson.getJSONObject("total").getInteger("heal"),
+                            cityChildrenJson.getJSONObject("total").getInteger("nowConfirm"),
+                            cityChildrenJson.getJSONObject("today").getInteger("confirm"),
+                            cityChildrenJson.getJSONObject("total").getInteger("dead"),
+                            cityChildrenJson.getJSONObject("total").getDouble("deadRate"),
+                            cityChildrenJson.getJSONObject("total").getInteger("suspect"),
+                            lastUpdateTime
+                    );
+                }
+            }
         }
     }
 }

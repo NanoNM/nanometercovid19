@@ -1,4 +1,4 @@
-package nanometer.covid19.nanometercovid19.util;
+package covid.nanometer.top.util;
 
 public class GCCUTIL {
     public static void GCC(){

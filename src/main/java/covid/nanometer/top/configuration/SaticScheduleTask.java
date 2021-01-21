@@ -1,8 +1,8 @@
-package nanometer.covid19.nanometercovid19.configuration;
+package covid.nanometer.top.configuration;
 
-import nanometer.covid19.nanometercovid19.services.CSVDataParsingService;
-import nanometer.covid19.nanometercovid19.services.JSONDateParsingService;
-import nanometer.covid19.nanometercovid19.util.Log4jUTIL;
+import covid.nanometer.top.services.CSVDataParsingService;
+import covid.nanometer.top.services.JSONDateParsingService;
+import covid.nanometer.top.util.Log4jUTIL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -42,6 +42,8 @@ public class SaticScheduleTask {
         if(response!=null){
             jsonDateParsingService.analysisOfDayCSVData(response);
             jsonDateParsingService.analysisOfCSVData(response);
+            jsonDateParsingService.analysisOfHisDayCityData(response);
+            jsonDateParsingService.analysisOfDayCityData(response);
         }else{
             Log4jUTIL.log.warn("腾讯疫情数据返回为null");
         }

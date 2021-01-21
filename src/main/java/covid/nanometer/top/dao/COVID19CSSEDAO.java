@@ -1,6 +1,6 @@
-package nanometer.covid19.nanometercovid19.dao;
+package covid.nanometer.top.dao;
 
-import nanometer.covid19.nanometercovid19.entity.CsseCovid19AllReportsDailyUpdate;
+import covid.nanometer.top.entity.CsseCovid19AllReportsDailyUpdate;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

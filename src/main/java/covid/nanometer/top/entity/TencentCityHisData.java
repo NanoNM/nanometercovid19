@@ -1,38 +1,36 @@
-package nanometer.covid19.nanometercovid19.entity;
+package covid.nanometer.top.entity;
 
 
-public class TencentDetailedChinaData {
+public class TencentCityHisData {
 
-  private long id;
-  private String province;
+  private long provinceId;
+  private String cityName;
   private long confirm;
   private double healRate;
   private long wzz;
   private long heal;
   private long nowConfirm;
-  private long dead;
-  private long suspect;
-  private double deadRate;
   private long todayConfirm;
-  private long wzzAdd;
+  private long dead;
+  private long deadRate;
+  private long suspect;
   private String lastUpdateTime;
 
 
-  public long getId() {
-    return id;
+  public long getProvinceId() {
+    return provinceId;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public void setProvinceId(long provinceId) {
+    this.provinceId = provinceId;
   }
 
-
-  public String getProvince() {
-    return province;
+  public String getCityName() {
+    return cityName;
   }
 
-  public void setProvince(String province) {
-    this.province = province;
+  public void setCityName(String cityName) {
+    this.cityName = cityName;
   }
 
 
@@ -81,33 +79,6 @@ public class TencentDetailedChinaData {
   }
 
 
-  public long getDead() {
-    return dead;
-  }
-
-  public void setDead(long dead) {
-    this.dead = dead;
-  }
-
-
-  public long getSuspect() {
-    return suspect;
-  }
-
-  public void setSuspect(long suspect) {
-    this.suspect = suspect;
-  }
-
-
-  public double getDeadRate() {
-    return deadRate;
-  }
-
-  public void setDeadRate(double deadRate) {
-    this.deadRate = deadRate;
-  }
-
-
   public long getTodayConfirm() {
     return todayConfirm;
   }
@@ -117,12 +88,30 @@ public class TencentDetailedChinaData {
   }
 
 
-  public long getWzzAdd() {
-    return wzzAdd;
+  public long getDead() {
+    return dead;
   }
 
-  public void setWzzAdd(long wzzAdd) {
-    this.wzzAdd = wzzAdd;
+  public void setDead(long dead) {
+    this.dead = dead;
+  }
+
+
+  public long getDeadRate() {
+    return deadRate;
+  }
+
+  public void setDeadRate(long deadRate) {
+    this.deadRate = deadRate;
+  }
+
+
+  public long getSuspect() {
+    return suspect;
+  }
+
+  public void setSuspect(long suspect) {
+    this.suspect = suspect;
   }
 
 

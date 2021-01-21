@@ -1,10 +1,11 @@
-package nanometer.covid19.nanometercovid19.controller;
+package covid.nanometer.top.controller;
 
 
-import nanometer.covid19.nanometercovid19.dao.COVID19CSSEDAO;
-import nanometer.covid19.nanometercovid19.dao.COVID19TENGXUNDAO;
-import nanometer.covid19.nanometercovid19.entity.CsseCovid19AllReportsDailyUpdate;
-import nanometer.covid19.nanometercovid19.entity.TencentDetailedChinaData;
+import covid.nanometer.top.dao.COVID19CSSEDAO;
+import covid.nanometer.top.dao.COVID19TENGXUNDAO;
+import covid.nanometer.top.entity.TencentCityHisData;
+import covid.nanometer.top.entity.TencentDetailedChinaData;
+import covid.nanometer.top.entity.CsseCovid19AllReportsDailyUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,6 @@ public class dataController extends BaseController{
     CsseCovid19AllReportsDailyUpdate[] getDateByCity(@RequestParam("p")String city){
         return covid19CSSEDAO.selectByCityRegion(city);
     }
-
     @ResponseBody
     @GetMapping("/csse/his/getbycountry")
     CsseCovid19AllReportsDailyUpdate[] getDateByHesCountry(@RequestParam("c")String country){
@@ -40,14 +40,33 @@ public class dataController extends BaseController{
         return covid19CSSEDAO.selectByHesCityRegion(city);
     }
 
+
     @ResponseBody
     @GetMapping("/tx/getbyp")
     TencentDetailedChinaData[] getTxDateByCountry(@RequestParam("p")String p){
-        return covid19TENGXUNDAO.selectByCityRegion(p);
+        TencentDetailedChinaData[] tencentDetailedChinaDatas = covid19TENGXUNDAO.selectByCityRegion(p);
+        for (TencentDetailedChinaData tencentDetailedChinaData:tencentDetailedChinaDatas){
+            tencentDetailedChinaData.setTencentCityHisData(covid19TENGXUNDAO.selectCityData(tencentDetailedChinaData.getId()));
+        }
+        return tencentDetailedChinaDatas;
     }
     @ResponseBody
     @GetMapping("/tx/his/getbyp")
     TencentDetailedChinaData[] getTxDateByHesCity(@RequestParam("p")String p){
-        return covid19TENGXUNDAO.selectByHisCityRegion(p);
+        TencentDetailedChinaData[] tencentDetailedChinaDatas = covid19TENGXUNDAO.selectByHisCityRegion(p);
+        for (TencentDetailedChinaData tencentDetailedChinaData:tencentDetailedChinaDatas){
+            tencentDetailedChinaData.setTencentCityHisData(covid19TENGXUNDAO.selectHisCityData(tencentDetailedChinaData.getLastUpdateTime(), tencentDetailedChinaData.getId()));
+        }
+        return tencentDetailedChinaDatas;
+    }
+    @ResponseBody
+    @GetMapping("/tx/getbyc")
+    TencentCityHisData[] getTxDateByC(@RequestParam("c")String p){
+        return covid19TENGXUNDAO.selectCityByC(p);
+    }
+    @ResponseBody
+    @GetMapping("/tx/his/getbyc")
+    TencentCityHisData[] getTxDateByHisC(@RequestParam("c")String p){
+        return covid19TENGXUNDAO.selectCityHisByC(p);
     }
 }

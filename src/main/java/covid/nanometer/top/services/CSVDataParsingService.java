@@ -1,10 +1,10 @@
-package nanometer.covid19.nanometercovid19.services;
+package covid.nanometer.top.services;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import nanometer.covid19.nanometercovid19.dao.COVID19CSSEDAO;
-import nanometer.covid19.nanometercovid19.util.GCCUTIL;
-import nanometer.covid19.nanometercovid19.util.Log4jUTIL;
+import covid.nanometer.top.dao.COVID19CSSEDAO;
+import covid.nanometer.top.util.GCCUTIL;
+import covid.nanometer.top.util.Log4jUTIL;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

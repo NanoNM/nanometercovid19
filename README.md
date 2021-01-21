@@ -1,4 +1,4 @@
-###COVID19 实时监控JavaSpringBoot项目
+### COVID19 实时监控JavaSpringBoot项目
 
 >数据来源 
 >
@@ -13,51 +13,22 @@
 >
     API
     
-    @Controller
-    public class dataController extends BaseController{
-        @Autowired
-        COVID19CSSEDAO covid19CSSEDAO;
-        @Autowired
-        COVID19TENGXUNDAO covid19TENGXUNDAO;
-    
-        @ResponseBody
-        @GetMapping("/csse/getbycountry")
-        CsseCovid19AllReportsDailyUpdate[] getDateByCountry(@RequestParam("c")String country){
-            return covid19CSSEDAO.selectByCountryRegion(country);
-        }
-        @ResponseBody
-        @GetMapping("/csse/getbyprovince")
-        CsseCovid19AllReportsDailyUpdate[] getDateByCity(@RequestParam("p")String city){
-            return covid19CSSEDAO.selectByCityRegion(city);
-        }
-    
-        @ResponseBody
-        @GetMapping("/csse/his/getbycountry")
-        CsseCovid19AllReportsDailyUpdate[] getDateByHesCountry(@RequestParam("c")String country){
-            return covid19CSSEDAO.selectByHesCountryRegion(country);
-        }
-        @ResponseBody
-        @GetMapping("/csse/his/getbyprovince")
-        CsseCovid19AllReportsDailyUpdate[] getDateByHesCity(@RequestParam("p")String city){
-            return covid19CSSEDAO.selectByHesCityRegion(city);
-        }
-    
-        @ResponseBody
-        @GetMapping("/tx/getbyp")
-        TencentDetailedChinaData[] getTxDateByCountry(@RequestParam("p")String p){
-            return covid19TENGXUNDAO.selectByCityRegion(p);
-        }
-        @ResponseBody
-        @GetMapping("/tx/his/getbyp")
-        TencentDetailedChinaData[] getTxDateByHesCity(@RequestParam("p")String p){
-            return covid19TENGXUNDAO.selectByHisCityRegion(p);
-        }
+    CSSE数据源(英文/全拼)
+        @GetMapping("/csse/getbycountry") 获取国家/地区数据c=国家/地区
+        @GetMapping("/csse/getbyprovince") 获取省/郡/州数据p=省/郡/州
+        @GetMapping("/csse/his/getbycountry") 获取国家/地区历史数据p=国家/地区
+        @GetMapping("/csse/his/getbyprovince") 获取省/郡/州历史数据p=省/郡/州
+        
+    腾讯数据源(中文)
+        @GetMapping("/tx/getbyp") 获取中国省数据p=省/自治区
+        @GetMapping("/tx/his/getbyp") 获取中国省历史数据p=省/自治区
+        @GetMapping("/tx/getbyc") 获取城市数据c=城市
+        @GetMapping("/tx/his/getbyc") 获取城市历史数据c=城市
     
     目前Demo数据库中存储的是2021 1 20 号之后的数据
     
     用法
     covid.nanometer.top/tx/getbyp?p=山东
-    
     covid.nanometer.top/csse/getbyprovince?p=shandong
     
 不要在意单词用法

@@ -1,4 +1,4 @@
-package nanometer.covid19.nanometercovid19.entity;
+package covid.nanometer.top.entity;
 
 
 public class CsseCovid19AllReportsDailyUpdate {
