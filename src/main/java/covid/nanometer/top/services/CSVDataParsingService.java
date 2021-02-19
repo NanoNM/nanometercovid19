@@ -87,7 +87,6 @@ public class CSVDataParsingService {
 
     private void getData(int i, List<CsseCovid19AllReportsDailyUpdate> stringList, String[] next) {
         if (i >= 1) {
-            System.out.println(next[2]);
             CsseCovid19AllReportsDailyUpdate csseCovid19AllReportsDailyUpdate = new CsseCovid19AllReportsDailyUpdate();
             csseCovid19AllReportsDailyUpdate.setProvinceState(next[2]);
             csseCovid19AllReportsDailyUpdate.setCountryRegion(next[3]);
@@ -115,7 +114,6 @@ public class CSVDataParsingService {
             i++;
         }
 
-        System.err.println(stringList.get(1).getCountryRegion());
         covid19CSSEDAO.insertDayCOVIDData(stringList);
         try {
             csvReader.close();
