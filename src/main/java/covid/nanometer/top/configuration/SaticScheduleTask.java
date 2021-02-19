@@ -23,30 +23,46 @@ public class SaticScheduleTask {
 //    @Scheduled(cron = "0/5 * * * * ?")
     //或直接指定时间间隔，例如：5秒
     @Scheduled(fixedDelayString="${covid19_date_source_timing_acquisition}")
-    private void gitHubDataTasks() {
-        Log4jUTIL.log.info("github数据同步开始");
-        String response = cvsDataGetService.getCovid19DateUrl();
-        if(response!=null){
-            cvsDataGetService.analysisOfDayCSVData(response);
-            cvsDataGetService.analysisOfCSVData(response);
-        }else{
-            Log4jUTIL.log.warn("github数据返回为null");
-        }
-        Log4jUTIL.log.info("github数据同步完毕");
+    private void timedTasks(){
+        new Thread(new gitHubDataTasks()).start();
+        new Thread(new tengXunDataTasks()).start();
     }
 
-    @Scheduled(fixedDelayString="${covid19_date_source_timing_acquisition}")
-    private void tengXunDataTasks() {
-        Log4jUTIL.log.info("腾讯疫情数据同步");
-        String response = jsonDateParsingService.getCovid19DateUrl();
-        if(response!=null){
-            jsonDateParsingService.analysisOfDayCSVData(response);
-            jsonDateParsingService.analysisOfCSVData(response);
-            jsonDateParsingService.analysisOfHisDayCityData(response);
-            jsonDateParsingService.analysisOfDayCityData(response);
-        }else{
-            Log4jUTIL.log.warn("腾讯疫情数据返回为null");
+
+    class gitHubDataTasks implements Runnable{
+        @Override
+        public void run() {
+            Log4jUTIL.log.info("github数据同步开始");
+            String response = cvsDataGetService.getCovid19DateUrl();
+            if(response!=null){
+                cvsDataGetService.analysisOfDayCSVData(response);
+                cvsDataGetService.analysisOfCSVData(response);
+            }else{
+                Log4jUTIL.log.warn("github数据返回为null");
+            }
+            Log4jUTIL.log.info("github数据同步完毕");
         }
-        Log4jUTIL.log.info("腾讯疫情数据同步完毕");
+
     }
+
+    class tengXunDataTasks implements Runnable {
+        @Override
+        public void run() {
+            Log4jUTIL.log.info("腾讯疫情数据同步");
+            String response = jsonDateParsingService.getCovid19DateUrl();
+            if(response!=null){
+                jsonDateParsingService.analysisOfDayCSVData(response);
+                jsonDateParsingService.analysisOfCSVData(response);
+                jsonDateParsingService.analysisOfHisDayCityData(response);
+                jsonDateParsingService.analysisOfDayCityData(response);
+            }else{
+                Log4jUTIL.log.warn("腾讯疫情数据返回为null");
+            }
+            Log4jUTIL.log.info("腾讯疫情数据同步完毕");
+
+        }
+    }
+
+
+
 }

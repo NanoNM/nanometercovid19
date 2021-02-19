@@ -3,7 +3,7 @@ package covid.nanometer.top.services;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import covid.nanometer.top.dao.COVID19CSSEDAO;
-import covid.nanometer.top.util.GCCUTIL;
+import covid.nanometer.top.entity.CsseCovid19AllReportsDailyUpdate;
 import covid.nanometer.top.util.Log4jUTIL;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,27 +68,39 @@ public class CSVDataParsingService {
         ByteArrayInputStream tInputStringStream = new ByteArrayInputStream(responseBody.getBytes());
         CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(tInputStringStream, StandardCharsets.UTF_8))).build();
         int i = 0;
+        List<CsseCovid19AllReportsDailyUpdate> stringList = new ArrayList<>();
         for (String[] next : csvReader) {
             int dateHave = covid19CSSEDAO.selectIfDataHave(next[4], next[11]);
             if (dateHave == 0) {
-                if (i >= 1) {
-                    covid19CSSEDAO.insertCOVIDData(next[2], next[3], next[4],
-                            Long.parseLong("".equals(next[7]) ? "0" : next[7]),
-                            Long.parseLong("".equals(next[8]) ? "0" : next[8]),
-                            Long.parseLong("".equals(next[9]) ? "0" : next[9]),
-                            Long.parseLong("".equals(next[10]) ? "0" : next[10]), next[11],
-                            Double.parseDouble("".equals(next[12]) ? "0.00" : next[12]),
-                            Double.parseDouble("".equals(next[13]) ? "0.00" : next[13]));
-                }
+                getData(i, stringList, next);
             }
             i++;
         }
+        covid19CSSEDAO.insertCOVIDData(stringList);
         try {
             csvReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        GCCUTIL.GCC();
+//        GCCUTIL.GCC();
+    }
+
+    private void getData(int i, List<CsseCovid19AllReportsDailyUpdate> stringList, String[] next) {
+        if (i >= 1) {
+            System.out.println(next[2]);
+            CsseCovid19AllReportsDailyUpdate csseCovid19AllReportsDailyUpdate = new CsseCovid19AllReportsDailyUpdate();
+            csseCovid19AllReportsDailyUpdate.setProvinceState(next[2]);
+            csseCovid19AllReportsDailyUpdate.setCountryRegion(next[3]);
+            csseCovid19AllReportsDailyUpdate.setLastUpdate(next[4]);
+            csseCovid19AllReportsDailyUpdate.setConfirmed(Long.parseLong("".equals(next[7]) ? "0" : next[7]));
+            csseCovid19AllReportsDailyUpdate.setDeaths(Long.parseLong("".equals(next[8]) ? "0" : next[8]));
+            csseCovid19AllReportsDailyUpdate.setRecovered(Long.parseLong("".equals(next[9]) ? "0" : next[9]));
+            csseCovid19AllReportsDailyUpdate.setActive(Long.parseLong("".equals(next[10]) ? "0" : next[10]));
+            csseCovid19AllReportsDailyUpdate.setCombinedKey(next[11]);
+            csseCovid19AllReportsDailyUpdate.setIncidentRate(Double.parseDouble("".equals(next[12]) ? "0.00" : next[12]));
+            csseCovid19AllReportsDailyUpdate.setCaseFatalityRatio(Double.parseDouble("".equals(next[13]) ? "0.00" : next[13]));
+            stringList.add(csseCovid19AllReportsDailyUpdate);
+        }
     }
 
 
@@ -97,24 +109,20 @@ public class CSVDataParsingService {
         CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(tInputStringStream, StandardCharsets.UTF_8))).build();
         int i = 0;
         covid19CSSEDAO.deleteAllDailyData();
+        List<CsseCovid19AllReportsDailyUpdate> stringList = new ArrayList<>();
         for (String[] next : csvReader) {
-            if (i >= 1) {
-                covid19CSSEDAO.insertDayCOVIDData(next[2], next[3], next[4],
-                        Long.parseLong("".equals(next[7]) ? "0" : next[7]),
-                        Long.parseLong("".equals(next[8]) ? "0" : next[8]),
-                        Long.parseLong("".equals(next[9]) ? "0" : next[9]),
-                        Long.parseLong("".equals(next[10]) ? "0" : next[10]), next[11],
-                        Double.parseDouble("".equals(next[12]) ? "0.00" : next[12]),
-                        Double.parseDouble("".equals(next[13]) ? "0.00" : next[13]));
-            }
+            getData(i, stringList, next);
             i++;
         }
+
+        System.err.println(stringList.get(1).getCountryRegion());
+        covid19CSSEDAO.insertDayCOVIDData(stringList);
         try {
             csvReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        GCCUTIL.GCC();
+//        GCCUTIL.GCC();
     }
 }
 

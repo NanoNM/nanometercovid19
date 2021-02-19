@@ -1,3 +1,5 @@
+create database COVID19;
+
 create table csse_covid_19_all_reports_daily_update
 (
     id                  int auto_increment

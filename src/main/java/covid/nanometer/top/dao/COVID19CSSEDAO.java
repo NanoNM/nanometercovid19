@@ -1,18 +1,19 @@
 package covid.nanometer.top.dao;
 
+import com.opencsv.CSVReader;
 import covid.nanometer.top.entity.CsseCovid19AllReportsDailyUpdate;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Mapper
 @Repository
 public interface COVID19CSSEDAO {
-    //   插入历史数据
-    @Insert("insert into csse_covid_19_all_reports_daily_update " +
+
+    @Insert({"<script>"  +
+            "insert into csse_covid_19_all_reports_daily_update" +
             "(Province_State," +
             "Country_Region," +
             "Last_Update," +
@@ -23,20 +24,24 @@ public interface COVID19CSSEDAO {
             "Combined_Key," +
             "Incident_Rate," +
             "Case_Fatality_Ratio) " +
-            "values(#{Province_State}," +
-            "#{Country_Region}," +
-            "#{Last_Update}," +
-            "#{Confirmed}," +
-            "#{Deaths}," +
-            "#{Recovered}," +
-            "#{Active}," +
-            "#{Combined_Key}," +
-            "#{Incident_Rate}," +
-            "#{Case_Fatality_Ratio})")
-    Integer insertDayCOVIDData(String Province_State, String Country_Region, String Last_Update, Long Confirmed, Long Deaths, Long Recovered, Long Active, String Combined_Key, Double Incident_Rate, Double Case_Fatality_Ratio);
+            "VALUES " +
+            "<foreach collection='list' item='stringlist' index='index' separator=','> " +
+            "(#{stringlist.provinceState}," +
+            "#{stringlist.countryRegion}," +
+            "#{stringlist.lastUpdate}," +
+            "#{stringlist.confirmed}," +
+            "#{stringlist.deaths}," +
+            "#{stringlist.recovered}," +
+            "#{stringlist.active}," +
+            "#{stringlist.combinedKey}," +
+            "#{stringlist.incidentRate}," +
+            "#{stringlist.caseFatalityRatio}) " +
+            "</foreach>" +
+            "</script>"})
+    Integer insertDayCOVIDData(@Param("list") List<CsseCovid19AllReportsDailyUpdate> list);
 
-    //   插入每日数据
-    @Insert("insert into csse_covid_19_all_reports_hestory_daily_update" +
+    @Insert({"<script>"  +
+            "insert into csse_covid_19_all_reports_hestory_daily_update" +
             "(Province_State," +
             "Country_Region," +
             "Last_Update," +
@@ -47,18 +52,21 @@ public interface COVID19CSSEDAO {
             "Combined_Key," +
             "Incident_Rate," +
             "Case_Fatality_Ratio) " +
-            "values(#{Province_State}," +
-            "#{Country_Region}," +
-            "#{Last_Update}," +
-            "#{Confirmed}," +
-            "#{Deaths}," +
-            "#{Recovered}," +
-            "#{Active}," +
-            "#{Combined_Key}," +
-            "#{Incident_Rate}," +
-            "#{Case_Fatality_Ratio})")
-    Integer insertCOVIDData(String Province_State, String Country_Region, String Last_Update, Long Confirmed, Long Deaths, Long Recovered, Long Active, String Combined_Key, Double Incident_Rate, Double Case_Fatality_Ratio);
-
+            "VALUES " +
+            "<foreach collection='list' item='stringlist' index='index' separator=','> " +
+            "(#{stringlist.provinceState}," +
+            "#{stringlist.countryRegion}," +
+            "#{stringlist.lastUpdate}," +
+            "#{stringlist.confirmed}," +
+            "#{stringlist.deaths}," +
+            "#{stringlist.recovered}," +
+            "#{stringlist.active}," +
+            "#{stringlist.combinedKey}," +
+            "#{stringlist.incidentRate}," +
+            "#{stringlist.caseFatalityRatio}) " +
+            "</foreach>" +
+            "</script>"})
+    Integer insertCOVIDData(@Param("list") List<CsseCovid19AllReportsDailyUpdate> list);
     // 重置每日数据
     @Delete("TRUNCATE csse_covid_19_all_reports_daily_update")
     Integer deleteAllDailyData();
